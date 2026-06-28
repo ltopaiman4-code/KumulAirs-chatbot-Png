@@ -142,3 +142,4 @@ def chat():
         reply = f"Sori, mi no klia tumas. Askim mi lo: book flight, cargo, schedule. O ringim {CUSTOMER_SERVICE} lo helpim yu nau."
     
     return jsonify({"reply": reply})
+    Add /chat route - fix repeat bug
