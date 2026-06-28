@@ -126,3 +126,19 @@ def chat():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+    @app.route('/chat', methods=['POST'])
+def chat():
+    user_message = request.json.get('message', '').lower()
+    
+    if 'gude' in user_message or 'hello' in user_message:
+        reply = f"Gude gen! Mi Kumul Air AI. Yu laik bookim flight go we? Ringim {CUSTOMER_SERVICE} o tokim mi route."
+    elif 'book' in user_message or 'flight' in user_message:
+        reply = f"OK! Lo bookim PNG Air flight, ringim Customer Service {CUSTOMER_SERVICE} nau. Ol i save lo olgeta PX routes: POM-LAE, POM-MDG, POM-HGU. Yu laik go we?"
+    elif 'cargo' in user_message or 'freight' in user_message:
+        reply = f"Mi ken helpim lo cargo! PNG Air i karim freight go lo 22 Province. Ringim {CUSTOMER_SERVICE} lo quote. Yu laik salim cargo go we?"
+    elif 'help' in user_message or 'customer' in user_message:
+        reply = f"PNG Air Customer Service: {CUSTOMER_SERVICE} 📞 Ol i op 24/7. Ol i ken helpim yu lo booking, schedule, cargo. Wanem problem blo yu?"
+    else:
+        reply = f"Sori, mi no klia tumas. Askim mi lo: book flight, cargo, schedule. O ringim {CUSTOMER_SERVICE} lo helpim yu nau."
+    
+    return jsonify({"reply": reply})
