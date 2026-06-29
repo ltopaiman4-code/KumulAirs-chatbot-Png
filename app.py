@@ -1,9 +1,7 @@
-
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+import os
 
 app = Flask(__name__)
-CORS(app)
 
 CUSTOMER_SERVICE = "180 3444"
 
@@ -13,20 +11,18 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_message = request.json.get('message', '').lower()
+    user_msg = request.json.get('message', '').lower()
     
-    if 'gude' in user_message or 'hello' in user_message or 'hi' in user_message:
-        reply = f"Gude gen CEO! Mi KumulAirs Chatbot. Hau mi ken helpim yu tete? Call {CUSTOMER_SERVICE} sapos emergency."
-    elif 'book' in user_message or 'bukim' in user_message or 'flight' in user_message:
-        reply = f"Yu laik bukim flight a? Mi ken helpim yu checkim price na taim. Kolim {CUSTOMER_SERVICE} lo toktok wantaim agent nau."
-    elif 'cargo' in user_message or 'freight' in user_message or 'kago' in user_message:
-        reply = f"PNG Air Cargo ken helpim! Minimum charge K50. Kolim {CUSTOMER_SERVICE} lo quote."
-    elif 'bag' in user_message or 'luggage' in user_message:
-        reply = f"Economy: 16kg + 7kg hand carry. Business: 30kg + 7kg. Moa info? Kolim {CUSTOMER_SERVICE}"
+    if any(word in user_msg for word in ['gude', 'hello', 'hi']):
+        reply = f"Gude! Mi KumulAirs AI Chatbot 🇵🇬✈️ Mi ken helpim yu lo flights na bookings. Ringim {CUSTOMER_SERVICE} sapos yu nidim man."
+    elif 'book' in user_msg or 'flight' in user_msg:
+        reply = f"Lo bukim flight, ringim KumulAirs Customer Service lo {CUSTOMER_SERVICE} 24/7. Yu redi lo helpim yu!"
+    elif 'baggage' in user_msg or 'bag' in user_msg:
+        reply = f"Lo baggage questions, ringim {CUSTOMER_SERVICE}. Ol bai helpim yu lo weight na fees."
     else:
-        reply = f"Sori CEO, mi no clear gut. Askim lo flight, cargo, bag? O kolim {CUSTOMER_SERVICE} sapos urgent."
+        reply = f"Mi no clear tumas. Yu ken ringim KumulAirs Customer Service lo {CUSTOMER_SERVICE} lo help."
     
-    return jsonify({"reply": reply})
+    return jsonify({'reply': reply})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
